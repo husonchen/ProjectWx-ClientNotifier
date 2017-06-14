@@ -6,6 +6,7 @@ import config
 import requests
 
 con = mdb.connect('localhost', 'xiaob', 'skdfjkasdf', 'xiaob')
+con.ping(True)
 cur = con.cursor()
 client = Client(config.prefix)
 url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='
