@@ -14,6 +14,7 @@ url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='
 def handler(message):
     try:
         ids = json.loads(message.body)
+        print ids
     except:
         return True
     access_token = client.get('access_token')
