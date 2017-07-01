@@ -13,8 +13,8 @@ url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='
 
 def handler(message):
     try:
+	print message.body
         ids = json.loads(message.body)
-        print ids
     except:
         return True
     access_token = client.get('access_token')
@@ -33,7 +33,8 @@ def handler(message):
     for row in rows:
         open_id = row[0]
         data = '{"touser":"%s","msgtype":"text","text":{"content":"您的好评返现申请不通过，请前往淘宝（我的订单--确认收货--晒图并好评）完成后，并上传评价截图（不是好评的晒图，是评价内容的截图）领取2-8元现金红包。"}}'% open_id
-        requests.post(u,data=data)
+        s = requests.post(u,data=data.encode('utf-8'))
+	print s.text
     return True
 
 
