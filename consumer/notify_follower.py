@@ -14,18 +14,25 @@ url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='
 def handler(message):
     try:
 	print message.body
-        ids = json.loads(message.body)
+        content = json.loads(message.body)
     except:
         return True
-    access_token = client.get('access_token')
+
+
+    shop_id = content['shop_id']
+    cur.execute('SELECT namespace from shop_setting WHERE shop_id=%d', int(shop_id))
+    data = cur.fetchone()
+    namespace = data[0]
+    access_token = client.get(namespace + '_' + 'access_token')
     if not access_token:
-        cur.execute("SELECT v from server_config where k = 'access_token' and name_space='wx'")
+        cur.execute("SELECT v from server_config where k = 'access_token' and name_space='%s'" % config.pay_namespace)
         data = cur.fetchone()
         access_token = data[0]
-        client.set('access_token', access_token)
+        client.set(namespace + '_' + 'access_token', access_token)
     u = url + access_token
+
     q = ''
-    for id in ids:
+    for id in content['ids']:
         q += id + ','
     q = q[:-1]
     num = cur.execute("select open_id from user_upload where id in (%s)"%q)
