@@ -5,7 +5,7 @@ from util.memcache_util import Client
 import config
 import requests
 
-con = mdb.connect('127.0.0.1', 'xiaob', 'skdfjkasdf', 'xiaob')
+con = mdb.connect('127.0.0.1', 'xiaob', 'skdfjkasdf', 'xunhui')
 con.ping(True)
 cur = con.cursor()
 client = Client(config.prefix)

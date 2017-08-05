@@ -13,8 +13,8 @@ url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='
 
 def handler(message):
     try:
-	print message.body
         content = json.loads(message.body)
+        print content
     except:
         return True
     open_id = content['open_id']
@@ -22,21 +22,16 @@ def handler(message):
     cur.execute('SELECT namespace from shop_setting WHERE shop_id=%d', int(shop_id))
     data = cur.fetchone()
     namespace = data[0]
-    access_token = client.get(namespace + '_' + 'access_token')
+    access_token = client.get(namespace+'_'+'access_token')
     if not access_token:
-        cur.execute("SELECT v from server_config where k = 'access_token' and name_space='wx'")
+        cur.execute("SELECT v from server_config where k = 'access_token' and name_space='%s'" % config.pay_namespace)
         data = cur.fetchone()
         access_token = data[0]
         client.set('access_token', access_token)
 
-<<<<<<< HEAD
-    u = url + access_token
-    open_id = content['open_id']
-=======
->>>>>>> bf5dd134e40e3d8c0a36c7f9be2cc0f5f5d0a632
+
     data = '{"touser":"%s","msgtype":"text","text":{"content":"红包发放失败，由于您的用户状态异常，使用常用的活跃的微信号可避免这种情况，请联系淘宝客服索取红包。"}}'% open_id
-    s = requests.post(u,data=data.encode('utf-8'))
-    print s.text
+    requests.post(url,data=data)
     return True
 
 
