@@ -1,5 +1,6 @@
 from consumer import notify_follower
 from consumer import notify_luckmoney_fail
+from consumer import notify_luckmoney_success
 import nsq
 
 
@@ -11,6 +12,10 @@ if __name__ == '__main__':
 
     r2 = nsq.Reader(message_handler=notify_luckmoney_fail.handler,
                    lookupd_http_addresses=['http://127.0.0.1:4161'],
-                   topic='luckmoney_fail', channel='send_wx', lookupd_poll_interval=15)
+                   topic='luckymoney_fail', channel='send_wx', lookupd_poll_interval=15)
+
+    r2 = nsq.Reader(message_handler=notify_luckmoney_success.handler,
+                    lookupd_http_addresses=['http://127.0.0.1:4161'],
+                    topic='luckymoney_success', channel='send_wx', lookupd_poll_interval=15)
 
     nsq.run()

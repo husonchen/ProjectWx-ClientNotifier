@@ -1,1 +1,2 @@
 curl -d '["93"]' 'http://127.0.0.1:4151/pub?topic=reject_notify'
+curl -d '{"open_id":"o1X2Et2LqJisCelDGTCWVJRcWV9M"}' 'http://127.0.0.1:4151/pub?topic=luckymoney_fail'

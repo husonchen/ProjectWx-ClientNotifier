@@ -22,12 +22,13 @@ def handler(message):
     cur.execute('SELECT namespace from shop_setting WHERE shop_id=%d', int(shop_id))
     data = cur.fetchone()
     namespace = data[0]
-    access_token = client.get(namespace + '_' + 'access_token')
+    access_token = client.get(namespace+'_'+'access_token')
     if not access_token:
-        cur.execute("SELECT v from server_config where k = 'access_token' and name_space='wx'")
+        cur.execute("SELECT v from server_config where k = 'access_token' and name_space='%s'" % config.pay_namespace)
         data = cur.fetchone()
         access_token = data[0]
         client.set('access_token', access_token)
+
 
     data = '{"touser":"%s","msgtype":"text","text":{"content":"红包发放失败，由于您的用户状态异常，使用常用的活跃的微信号可避免这种情况，请联系淘宝客服索取红包。"}}'% open_id
     requests.post(url,data=data)
