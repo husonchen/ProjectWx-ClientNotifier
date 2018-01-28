@@ -18,8 +18,8 @@ def handler(message):
     except:
         return True
     open_id = content['open_id']
-    shop_id = content['shop_id']
-    cur.execute('SELECT namespace from shop_setting WHERE shop_id=%d', int(shop_id))
+    shop_id = int(content['shop_id'])
+    cur.execute('SELECT namespace from shop_setting WHERE shop_id=%d'%shop_id)
     data = cur.fetchone()
     namespace = data[0]
     access_token = client.get(namespace + '_' + 'access_token')
